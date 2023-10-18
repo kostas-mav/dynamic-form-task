@@ -1,0 +1,7 @@
+<input
+  [value]="value$ | async"
+  [disabled]="(isDisabled$ | async) ?? false"
+  (input)="setValue($event)"
+  (click)="onTouch()"
+  type="text"
+/>

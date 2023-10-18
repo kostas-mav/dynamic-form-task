@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './list-item.component.html',
-  styleUrls: ['./list-item.component.scss']
+  styleUrls: ['./list-item.component.scss'],
 })
 export class ListItemComponent {
-
+  @Input({ required: true }) name!: string;
 }

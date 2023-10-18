@@ -1,6 +1,23 @@
 /* You can add global styles to this file, and also import other style files */
 
-body {
+:root {
+  --primary: green;
+  --secondary: cyan;
+  --neutral: gold;
+  --warn: red;
+  --font: rgb(9, 9, 31);
+}
+
+* {
   margin: 0;
-  height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
 }
