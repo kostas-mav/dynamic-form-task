@@ -1,1 +1,20 @@
-<p>combobox-input works!</p>
+<div
+  (click)="!componentDisabled && toggleOptions()"
+  class="selected-option-name"
+  [ngClass]="{ disabled: componentDisabled }"
+>
+  <div class="flex items-center gap-2">
+    <span>{{ selectedOption }}</span>
+  </div>
+  <i class="bx bxs-down-arrow"></i>
+</div>
+
+<div *ngIf="displayOptions && !componentDisabled" class="options-container">
+  <div
+    *ngFor="let option of options"
+    (click)="selectOptionHandler(option)"
+    class="option"
+  >
+    {{ option }}
+  </div>
+</div>
