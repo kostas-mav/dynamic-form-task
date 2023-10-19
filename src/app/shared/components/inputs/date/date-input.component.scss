@@ -1,0 +1,56 @@
+:host {
+  display: inline-block;
+  position: relative;
+  border: 2px solid;
+
+  ::ng-deep mat-datepicker-toggle > button {
+    width: 0 !important;
+    height: 0 !important;
+    line-height: 0 !important;
+  }
+}
+::ng-deep .mat-datepicker-actions {
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 1rem !important;
+  padding: 0 1.25rem 1.25rem !important;
+}
+::ng-deep .mat-calendar-body-selected {
+  background-color: white; // var(--primary);
+}
+
+// Hidden items
+.hidden-container {
+  visibility: hidden;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 2rem;
+  width: 2rem;
+}
+
+// Button
+.button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  border-radius: 4px;
+  padding: 1rem;
+  cursor: pointer;
+  box-sizing: border-box;
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: white;
+
+  .placeholder {
+    opacity: 40%;
+  }
+
+  i {
+    display: inline-block;
+    cursor: pointer;
+    color: var(--primary);
+    font-size: 1.5rem;
+  }
+}
