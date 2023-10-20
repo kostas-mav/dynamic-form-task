@@ -1,6 +1,17 @@
 :host {
-  background-color: cyan;
+  background-color: white;
   height: 100%;
   width: 100%;
   max-width: 250px;
+  padding: 0 0 1rem 0;
+
+  border-right: 1px solid grey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-container {
+  width: 100%;
 }

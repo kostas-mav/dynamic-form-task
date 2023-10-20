@@ -2,12 +2,26 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-button',
+  selector: '[appButton]',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './button.component.html',
-  styleUrls: ['./button.component.scss']
+  template: `<ng-content></ng-content>`,
+  styles: [
+    `
+      :host {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.5rem 0.75rem;
+        /* border: 2px solid black; */
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        background-color: var(--primary);
+        color: white;
+      }
+    `,
+  ],
 })
-export class ButtonComponent {
-
-}
+export class ButtonComponent {}

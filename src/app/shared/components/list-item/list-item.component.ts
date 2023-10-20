@@ -1,11 +1,12 @@
 import { Component, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-list-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './list-item.component.html',
   styleUrls: ['./list-item.component.scss'],
 })

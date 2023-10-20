@@ -77,9 +77,9 @@
   </mat-grid-list> -->
   </form>
   <div class="actions-container">
-    <button (click)="addFormToList(form)">Add</button>
-    <button (click)="printFormValue()">Print</button>
-    <button (click)="validateForm()">Validate</button>
+    <button appButton (click)="addFormToList(form)">Add</button>
+    <button appButton (click)="printFormValue()">Print</button>
+    <button appButton (click)="validateForm()">Validate</button>
   </div>
   <ng-template #noForm>No form available</ng-template>
 </ng-container>

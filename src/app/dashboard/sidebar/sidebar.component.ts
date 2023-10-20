@@ -4,11 +4,12 @@ import { ListItemComponent } from 'src/app/shared/components/list-item/list-item
 
 import { SAMPLE } from 'src/mock/example-form';
 import { FormStore } from '../data-access/form-store.service';
+import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, ListItemComponent],
+  imports: [CommonModule, ListItemComponent, ButtonComponent],
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })

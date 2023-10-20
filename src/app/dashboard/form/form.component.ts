@@ -22,6 +22,7 @@ import { ComboboxInputComponent } from 'src/app/shared/components/inputs/combobo
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { FormStore } from '../data-access/form-store.service';
 import { tap } from 'rxjs';
+import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 export interface Form {
   title: string;
@@ -40,6 +41,7 @@ export interface Form {
     TextInputComponent,
     DateInputComponent,
     ComboboxInputComponent,
+    ButtonComponent
   ],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
