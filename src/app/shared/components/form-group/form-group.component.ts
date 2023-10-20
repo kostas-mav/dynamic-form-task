@@ -1,6 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Control } from '../form-control/form-control.component';
+import {
+  Control,
+  FormControlComponent,
+} from '../form-control/form-control.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MaterialModule } from '../../utils/material/material.module';
 
 export interface Group {
   title: string;
@@ -12,8 +17,15 @@ export interface Group {
 @Component({
   selector: 'app-form-group',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MaterialModule,
+    FormControlComponent,
+  ],
   templateUrl: './form-group.component.html',
   styleUrls: ['./form-group.component.scss'],
 })
-export class FormGroupComponent {}
+export class FormGroupComponent {
+  @Input({ required: true }) group!: Group;
+}

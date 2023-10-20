@@ -6,6 +6,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatGridListModule } from '@angular/material/grid-list';
 
 @NgModule({
   imports: [
@@ -15,12 +16,14 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatGridListModule,
   ],
   exports: [
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
     MatAutocompleteModule,
+    MatGridListModule,
   ],
 })
 export class MaterialModule {}

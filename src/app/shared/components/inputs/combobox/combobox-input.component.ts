@@ -12,7 +12,6 @@ import {
   NonNullableFormBuilder,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-combobox-input',
@@ -35,6 +34,11 @@ export class ComboboxInputComponent implements ControlValueAccessor {
     private cdRef: ChangeDetectorRef
   ) {}
 
+  updateOption(event: any) {
+    console.log(event.target.value);
+    this.selectOptionHandler(event.target.value as string);
+  }
+
   @Input() options: string[] = ['One', 'Two', 'Three'];
 
   selectedOption: string = '';
@@ -51,12 +55,8 @@ export class ComboboxInputComponent implements ControlValueAccessor {
   }
 
   selectOptionHandler(option: string) {
-    // if (option.id === this.selectedOptionItem.id) return;
-    // if (option.disabled) return;
-
     this.selectedOption = option;
     this.onChange(option);
-    // this.onTouched();
     this.toggleOptions();
     this.cdRef.detectChanges();
   }

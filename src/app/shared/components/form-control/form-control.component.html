@@ -1,1 +1,19 @@
-<p>form-control works!</p>
+<label>
+  {{ control.title }}
+
+  <app-text-input
+    *ngIf="control.type === 'text'"
+    [formControlName]="control.name"
+  ></app-text-input>
+
+  <app-date-input
+    *ngIf="control.type === 'date'"
+    [formControlName]="control.name"
+  ></app-date-input>
+
+  <app-combobox-input
+    *ngIf="control.type === 'text'"
+    [formControlName]="control.name"
+    [options]="control.data ?? []"
+  ></app-combobox-input>
+</label>

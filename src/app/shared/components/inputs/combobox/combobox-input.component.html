@@ -1,4 +1,4 @@
-<div
+<!-- <div
   (click)="!componentDisabled && toggleOptions()"
   class="selected-option-name"
   [ngClass]="{ disabled: componentDisabled }"
@@ -17,4 +17,7 @@
   >
     {{ option }}
   </div>
-</div>
+</div> -->
+<select (change)="updateOption($event)" name="select">
+  <option *ngFor="let option of options" [value]="option">{{ option }}</option>
+</select>

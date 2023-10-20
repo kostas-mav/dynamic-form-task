@@ -1,7 +1,78 @@
-<form [formGroup]="form">
-  <app-text-input formControlName="text"></app-text-input>
+<form [formGroup]="formGroup" class="grid-container">
+  <div
+    class="grid-item"
+    *ngFor="let group of form.groups"
+    [ngStyle]="{ 'grid-column-end': 'span ' + group.span }"
+  >
+    <div class="inner-grid-container">
+      <div
+        class="inner-grid-item"
+        *ngFor="let control of group.controls"
+        [ngStyle]="{ 'grid-column-end': 'span ' + control.span }"
+      >
+        <label>
+          {{ control.title }}
 
-  <app-date-input></app-date-input>
+          <app-text-input
+            *ngIf="control.type === 'text'"
+            [formControlName]="control.name"
+          ></app-text-input>
 
-  <app-combobox-input></app-combobox-input>
+          <app-date-input
+            *ngIf="control.type === 'date'"
+            [control]="getControl(control.name)"
+          ></app-date-input>
+
+          <app-combobox-input
+            *ngIf="control.type === 'combobox'"
+            [formControlName]="control.name"
+            [options]="control.data ?? []"
+          ></app-combobox-input>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- ///////// -->
+  <!-- <mat-grid-list [cols]="form.inline" rowHeight="100px">
+    <mat-grid-tile
+      *ngFor="let group of form.groups"
+      [colspan]="group.span"
+      [rowspan]="1"
+    >
+      <div class="internalMatGrid">
+        <mat-grid-list [cols]="form.inline" rowHeight="100px">
+          <mat-grid-tile
+            *ngFor="let control of group.controls"
+            [colspan]="control.span"
+            [rowspan]="1"
+          >
+            <label>
+              {{ control.title }}
+
+              <app-text-input
+                *ngIf="control.type === 'text'"
+                [formControlName]="control.name"
+              ></app-text-input>
+
+              <app-date-input
+                *ngIf="control.type === 'date'"
+                [control]="getControl(control.name)"
+              ></app-date-input>
+
+              <app-combobox-input
+                *ngIf="control.type === 'combobox'"
+                [formControlName]="control.name"
+                [options]="control.data ?? []"
+              ></app-combobox-input>
+            </label>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list> -->
 </form>
+<div class="actions-container">
+  <button (click)="addFormToList()">Add</button>
+  <button (click)="printFormValue()">Print</button>
+  <button (click)="validateForm()">Validate</button>
+</div>
