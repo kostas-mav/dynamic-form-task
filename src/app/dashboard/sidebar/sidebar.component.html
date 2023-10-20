@@ -1,1 +1,10 @@
-<app-list-item name="Test Item"></app-list-item>
+<ng-container *ngIf="formList$ | async as formList">
+  <app-list-item
+    *ngFor="let form of formList"
+    [name]="form.title"
+    (download)="downloadList($event)"
+    (remove)="removeList($event)"
+  ></app-list-item>
+</ng-container>
+
+<button (click)="uploadList()">Upload List</button>

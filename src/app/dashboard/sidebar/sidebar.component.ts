@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListItemComponent } from 'src/app/shared/components/list-item/list-item.component';
 
+import { SAMPLE } from 'src/mock/example-form';
+import { FormStore } from '../data-access/form-store.service';
+
 @Component({
   selector: 'app-sidebar',
   standalone: true,
@@ -9,4 +12,20 @@ import { ListItemComponent } from 'src/app/shared/components/list-item/list-item
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {}
+export class SidebarComponent {
+  formList$ = this.formStore.formList$;
+
+  uploadList() {
+    this.formStore.addFormPreview(SAMPLE);
+  }
+
+  removeList(name: string) {
+    this.formStore.removeFormFromList(name);
+  }
+
+  downloadList(name: string) {
+    console.log(`Converting ${name} list for download...`);
+  }
+
+  constructor(private formStore: FormStore) {}
+}
