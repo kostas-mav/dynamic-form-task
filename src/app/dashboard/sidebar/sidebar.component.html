@@ -2,11 +2,11 @@
   <ng-container *ngIf="formList$ | async as formList">
     <app-list-item
       *ngFor="let form of formList"
-      [name]="form.title"
+      [form]="form"
       (download)="downloadList($event)"
       (remove)="removeList($event)"
     ></app-list-item>
   </ng-container>
 </div>
 
-<button appButton (click)="uploadList()">Upload List</button>
+<app-upload-button></app-upload-button>

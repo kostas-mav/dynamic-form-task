@@ -1,5 +1,5 @@
-<div>{{ name }}</div>
+<div>{{ form.title }}</div>
 <div class="action-button-container">
-  <button appButton (click)="downloadList()">DL</button>
+  <button appDownloadButton [form]="form" (click)="downloadList()">DL</button>
   <button appButton (click)="removeList()">X</button>
 </div>

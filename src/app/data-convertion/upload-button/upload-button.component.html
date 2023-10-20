@@ -1,0 +1,13 @@
+<div
+  id="drop-area"
+  (dragover)="$event.preventDefault()"
+  (drop)="onDrop($event)"
+>
+  <input
+    #uploadButton
+    type="file"
+    (change)="onFileSelected($event)"
+    accept=".json"
+  />
+  <button appButton (click)="uploadButton.click()">Upload List</button>
+</div>
