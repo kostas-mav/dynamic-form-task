@@ -19,7 +19,11 @@ import { isEmpty } from 'lodash';
 export class DateInputComponent {
   @Input() control = this.fb.control('');
   @Input() placeholder = 'Pick a date';
-  @Output() cancelDate = new Subject();
+  @Output() cancelDate = new Subject<void>();
+
+  clearControl() {
+    this.control.setValue('');
+  }
 
   dateJson$ = new BehaviorSubject('');
 

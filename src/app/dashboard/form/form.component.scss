@@ -2,6 +2,7 @@
   background-color: white;
   height: 100%;
   width: 100%;
+  padding: 0.25rem 0.5rem;
 }
 
 .internalMatGrid {
@@ -17,6 +18,21 @@ label {
   flex-direction: column;
   align-items: flex-start;
   width: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  padding-bottom: 0.5rem;
+}
+
+.form-title,
+.group-title {
+  width: 100%;
+  text-align: start;
+  font-weight: 700;
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-size: 1.5rem;
 }
 
 .grid-container {
@@ -27,9 +43,12 @@ label {
 
 .grid-item {
   display: inline-block;
-  background-color: lightblue;
-  padding: 10px;
+  // background-color: lightblue;
   text-align: center;
+}
+
+.group-title {
+  font-size: 1.25rem;
 }
 
 .inner-grid-container {
@@ -40,7 +59,7 @@ label {
 }
 
 .inner-grid-item {
-  background-color: cyan;
+  // background-color: cyan;
   min-height: 70px;
 }
 

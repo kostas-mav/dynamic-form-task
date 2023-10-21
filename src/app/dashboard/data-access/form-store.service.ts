@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Form } from '../form/form.component';
 import { take, tap, withLatestFrom } from 'rxjs';
+import { SAMPLE } from 'src/mock/example-form';
 
 interface FormState {
   formList: Form[];
@@ -15,7 +16,7 @@ export class FormStore extends ComponentStore<FormState> {
   constructor() {
     super({
       formList: [],
-      formPreview: null,
+      formPreview: SAMPLE,
     });
   }
 

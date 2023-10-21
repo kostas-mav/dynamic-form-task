@@ -4,10 +4,11 @@
 }
 
 input {
-  padding: 8px 12px;
+  padding: 0.5rem;
   width: 100%;
   outline: none;
-  border-radius: 2px;
+  border: solid 1px green;
+  border-radius: 6px;
   color: var(--font);
 
   &::placeholder {
@@ -15,8 +16,4 @@ input {
     font-size: 14px;
     line-height: 16px;
   }
-}
-
-input:focus {
-  box-shadow: 0 0 0 2px var(--secondary);
 }
