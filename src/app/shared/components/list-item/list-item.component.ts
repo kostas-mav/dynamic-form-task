@@ -14,12 +14,7 @@ import { Form } from 'src/app/dashboard/form/form.component';
 })
 export class ListItemComponent {
   @Input({ required: true }) form!: Form;
-  @Output() download = new Subject<string>();
   @Output() remove = new Subject<string>();
-
-  downloadList() {
-    this.download.next(this.form.title);
-  }
 
   removeList() {
     this.remove.next(this.form.title);

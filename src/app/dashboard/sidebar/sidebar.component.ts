@@ -24,9 +24,5 @@ export class SidebarComponent {
     this.formStore.removeFormFromList(name);
   }
 
-  downloadList(name: string) {
-    console.log(`Converting ${name} list for download...`);
-  }
-
   constructor(private formStore: FormStore) {}
 }

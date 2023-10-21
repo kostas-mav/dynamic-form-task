@@ -2,11 +2,7 @@ import { Component, ElementRef, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { BehaviorSubject, Subject, merge, takeUntil, tap } from 'rxjs';
-import {
-  FormBuilder,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { isEmpty } from 'lodash';
 import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
 
@@ -18,19 +14,27 @@ import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
   styleUrls: ['./date-input.component.scss'],
 })
 export class DateInputComponent {
+  private _destroy$ = new Subject<null>();
+
+  private _setControlValue(value: string) {
+    this.control.markAsTouched();
+    this.control.markAsDirty();
+    this.control.setValue(value);
+  }
+
   @Input() control = this.fb.control('');
   @Input() placeholder = 'Pick a date';
   @Output() cancelDate = new Subject<void>();
-
-  clearControl() {
-    this.control.setValue('');
-  }
 
   dateJson$ = new BehaviorSubject('');
 
   datepickerControl = this.fb.control<Date | null>(
     isEmpty(this.control.value) ? null : new Date(this.control.value as string)
   );
+
+  clearControl() {
+    this.control.setValue('');
+  }
 
   changeBorderColor() {
     if (this.control.invalid) {
@@ -54,7 +58,6 @@ export class DateInputComponent {
       this.dateJson$.next(this.control.value as string);
     }
 
-    // Subscriptions
     merge(
       this.formStore.validateForm$.pipe(tap(() => this.changeBorderColor())),
       this.datepickerControl.valueChanges.pipe(
@@ -83,14 +86,6 @@ export class DateInputComponent {
         })
       )
     ).subscribe();
-  }
-
-  private _destroy$ = new Subject<null>();
-
-  private _setControlValue(value: string) {
-    this.control.markAsTouched();
-    this.control.markAsDirty();
-    this.control.setValue(value);
   }
 
   ngOnDestroy(): void {

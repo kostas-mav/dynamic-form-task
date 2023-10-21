@@ -43,7 +43,6 @@ label {
 
 .grid-item {
   display: inline-block;
-  // background-color: lightblue;
   text-align: center;
 }
 
@@ -53,13 +52,11 @@ label {
 
 .inner-grid-container {
   display: grid;
-  // grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 10px;
   grid-auto-flow: column;
 }
 
 .inner-grid-item {
-  // background-color: cyan;
   min-height: 70px;
 }
 

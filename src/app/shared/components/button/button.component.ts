@@ -14,7 +14,6 @@ import { CommonModule } from '@angular/common';
         align-items: center;
         gap: 0.25rem;
         padding: 0.5rem 0.75rem;
-        /* border: 2px solid black; */
         border: none;
         border-radius: 0.5rem;
         cursor: pointer;

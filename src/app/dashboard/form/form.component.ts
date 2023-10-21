@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroupComponent,
@@ -42,6 +42,22 @@ export interface Form {
 })
 export class FormComponent implements OnInit {
   readonly formPreview$ = this.formStore.formPreview$.pipe(
+    tap((form) => {
+      if (form)
+        form.groups.forEach((group) => {
+          group.controls.forEach((control) => {
+            const newControl = this.fb.control('');
+
+            if (control.defaultValue) newControl.setValue(control.defaultValue);
+
+            if (control.required) newControl.addValidators(Validators.required);
+
+            if (control.readonly) newControl.disable();
+
+            this.formGroup.addControl(control.name, newControl);
+          });
+        });
+    }),
     map((form) => {
       if (form) {
         const updatedGroups = form.groups.map((group) => {
@@ -88,47 +104,19 @@ export class FormComponent implements OnInit {
   }
 
   addFormToList(form: Form) {
-    // console.log(`Adding form to list...`);
     this.formStore.addFormToList(form);
   }
 
   validateForm() {
-    console.log(`Validating form...`);
     this.formStore.validateForm$.next();
   }
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private cdRef: ChangeDetectorRef,
     private formStore: FormStore
   ) {}
 
   ngOnInit(): void {
-    this.formPreview$
-      .pipe(
-        tap((form) => {
-          if (form)
-            form.groups.forEach((group) => {
-              group.controls.forEach((control) => {
-                const newControl = this.fb.control('');
-
-                if (control.defaultValue)
-                  newControl.setValue(control.defaultValue);
-
-                if (control.required)
-                  newControl.addValidators(Validators.required);
-
-                if (control.readonly) newControl.disable();
-
-                this.formGroup.addControl(control.name, newControl);
-              });
-            });
-        })
-      )
-      .subscribe();
-
-    // this.formGroup.valueChanges.subscribe((val) => {
-    //   console.log(val);
-    // });
+    this.formGroup.valueChanges.subscribe(console.log);
   }
 }

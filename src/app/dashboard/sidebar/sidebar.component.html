@@ -3,7 +3,6 @@
     <app-list-item
       *ngFor="let form of formList"
       [form]="form"
-      (download)="downloadList($event)"
       (remove)="removeList($event)"
     ></app-list-item>
   </ng-container>

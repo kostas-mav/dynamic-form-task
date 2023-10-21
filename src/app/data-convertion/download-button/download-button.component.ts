@@ -7,7 +7,6 @@ import { Form } from 'src/app/dashboard/form/form.component';
   standalone: true,
   imports: [CommonModule],
   template: `<ng-content></ng-content>`,
-  styleUrls: ['./download-button.component.scss'],
 })
 export class DownloadButtonComponent {
   @Input({ required: true }) form!: Form;

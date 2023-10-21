@@ -4,18 +4,14 @@ import {
   ElementRef,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  NonNullableFormBuilder,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
-import { tap } from 'rxjs';
+import { Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-combobox-input',
@@ -23,37 +19,14 @@ import { tap } from 'rxjs';
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './combobox-input.component.html',
   styleUrls: ['./combobox-input.component.scss'],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: ComboboxInputComponent,
-      multi: true,
-    },
-  ],
 })
-export class ComboboxInputComponent implements ControlValueAccessor, OnInit {
+export class ComboboxInputComponent implements OnInit, OnDestroy {
+  private _destroy$ = new Subject<void>();
+
   @Input() control = this.fb.control('');
-
-  @ViewChild('inputElRef', { static: true }) inputElRef!: ElementRef;
-
-  changeBorderColor() {
-    if (this.control.invalid) {
-      this.inputElRef.nativeElement.style.borderColor = 'red';
-    } else {
-      this.inputElRef.nativeElement.style.borderColor = 'green';
-    }
-  }
-
-  updateOption(event: any) {
-    console.log(event.target.value);
-    this.selectOptionHandler(event.target.value as string);
-  }
-
   @Input() options: string[] = ['One', 'Two', 'Three'];
 
-  selectedOption: string = '';
-  componentDisabled: boolean = false;
-  displayOptions: boolean = false;
+  @ViewChild('inputElRef', { static: true }) inputElRef!: ElementRef;
 
   @HostListener('document:click', ['$event'])
   documentClickHandler(event: MouseEvent) {
@@ -64,40 +37,32 @@ export class ComboboxInputComponent implements ControlValueAccessor, OnInit {
     }
   }
 
+  selectedOption: string = '';
+  componentDisabled: boolean = false;
+  displayOptions: boolean = false;
+
+  changeBorderColor() {
+    if (this.control.invalid) {
+      this.inputElRef.nativeElement.style.borderColor = 'red';
+    } else {
+      this.inputElRef.nativeElement.style.borderColor = 'green';
+    }
+  }
+
+  updateOption(event: any) {
+    this.selectOptionHandler(event.target.value as string);
+  }
+
   selectOptionHandler(option: string) {
     this.selectedOption = option;
-    this.onChange(option);
+    this.control.setValue(option);
     this.toggleOptions();
     this.cdRef.detectChanges();
   }
 
   toggleOptions() {
     this.displayOptions = !this.displayOptions;
-    this.onTouched();
-  }
-
-  onChange = (arg: any) => {};
-  onTouched = () => {};
-
-  writeValue(value: string): void {
-    this.options.forEach((option) => {
-      if (option === value) {
-        this.selectedOption = option;
-        this.onChange(value);
-      }
-    });
-  }
-
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
-  }
-
-  registerOnTouched(fn: any): void {
-    this.onTouched = fn;
-  }
-
-  setDisabledState?(isDisabled: boolean): void {
-    this.componentDisabled = isDisabled;
+    this.control.markAsTouched();
   }
 
   constructor(
@@ -109,7 +74,14 @@ export class ComboboxInputComponent implements ControlValueAccessor, OnInit {
 
   ngOnInit(): void {
     this.formStore.validateForm$
-      .pipe(tap(() => this.changeBorderColor()))
+      .pipe(
+        takeUntil(this._destroy$),
+        tap(() => this.changeBorderColor())
+      )
       .subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this._destroy$.next();
   }
 }
