@@ -1,10 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroupComponent,
@@ -12,16 +6,16 @@ import {
 } from 'src/app/shared/components/form-group/form-group.component';
 import {
   FormControl,
-  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { TextInputComponent } from 'src/app/shared/components/inputs/text/text-input.component';
 import { DateInputComponent } from 'src/app/shared/components/inputs/date/date-input.component';
 import { ComboboxInputComponent } from 'src/app/shared/components/inputs/combobox/combobox-input.component';
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { FormStore } from '../data-access/form-store.service';
-import { tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 export interface Form {
@@ -41,13 +35,47 @@ export interface Form {
     TextInputComponent,
     DateInputComponent,
     ComboboxInputComponent,
-    ButtonComponent
+    ButtonComponent,
   ],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-  readonly formPreview$ = this.formStore.formPreview$;
+  readonly formPreview$ = this.formStore.formPreview$.pipe(
+    map((form) => {
+      if (form) {
+        const updatedGroups = form.groups.map((group) => {
+          const orderedControls = group.controls.filter(
+            (obj) => obj.order !== undefined
+          );
+
+          if (orderedControls.length) {
+            orderedControls.sort(
+              (a, b) => (a.order as number) - (b.order as number)
+            );
+          }
+
+          const unorderedControls = group.controls.filter(
+            (obj) => obj.order === undefined
+          );
+
+          return {
+            ...group,
+            controls: orderedControls.concat(unorderedControls),
+          };
+        });
+
+        const updatedForm = {
+          ...form,
+          groups: updatedGroups,
+        };
+
+        return updatedForm;
+      } else {
+        return form;
+      }
+    })
+  );
 
   formGroup = this.fb.group({});
 
@@ -81,12 +109,17 @@ export class FormComponent implements OnInit {
           if (form)
             form.groups.forEach((group) => {
               group.controls.forEach((control) => {
-                this.formGroup.addControl(
-                  control.name,
-                  this.fb.control(control.defaultValue ?? '', {
-                    validators: [],
-                  })
-                );
+                const newControl = this.fb.control('');
+
+                if (control.defaultValue)
+                  newControl.setValue(control.defaultValue);
+
+                if (control.required)
+                  newControl.addValidators(Validators.required);
+
+                if (control.readonly) newControl.disable();
+
+                this.formGroup.addControl(control.name, newControl);
               });
             });
         })
