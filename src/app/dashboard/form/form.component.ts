@@ -94,6 +94,7 @@ export class FormComponent implements OnInit {
 
   validateForm() {
     console.log(`Validating form...`);
+    this.formStore.validateForm$.next();
   }
 
   constructor(

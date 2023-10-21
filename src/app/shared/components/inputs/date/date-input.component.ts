@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, ElementRef, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { BehaviorSubject, Subject, merge, takeUntil, tap } from 'rxjs';
@@ -8,6 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { isEmpty } from 'lodash';
+import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
 
 @Component({
   selector: 'app-date-input',
@@ -31,7 +32,19 @@ export class DateInputComponent {
     isEmpty(this.control.value) ? null : new Date(this.control.value as string)
   );
 
-  constructor(private fb: FormBuilder) {}
+  changeBorderColor() {
+    if (this.control.invalid) {
+      this.elRef.nativeElement.style.borderColor = 'red';
+    } else {
+      this.elRef.nativeElement.style.borderColor = 'green';
+    }
+  }
+
+  constructor(
+    private fb: FormBuilder,
+    private elRef: ElementRef,
+    private formStore: FormStore
+  ) {}
 
   ngOnInit(): void {
     if (!isEmpty(this.control.value)) {
@@ -43,6 +56,7 @@ export class DateInputComponent {
 
     // Subscriptions
     merge(
+      this.formStore.validateForm$.pipe(tap(() => this.changeBorderColor())),
       this.datepickerControl.valueChanges.pipe(
         takeUntil(this._destroy$),
         tap((val: Date | null) => {

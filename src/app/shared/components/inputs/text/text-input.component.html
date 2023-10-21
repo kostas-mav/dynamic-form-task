@@ -1,4 +1,6 @@
 <input
+  #inputElRef
+  [formControl]="control"
   [value]="value$ | async"
   [disabled]="(isDisabled$ | async) ?? false"
   (input)="setValue($event)"

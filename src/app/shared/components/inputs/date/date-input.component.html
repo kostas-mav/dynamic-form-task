@@ -1,19 +1,14 @@
 <div (click)="picker.open()" matRipple class="button">
-  <!-- Placeholder -->
   <span *ngIf="(dateJson$ | async) === ''; else date" class="placeholder">
     {{ placeholder }}
   </span>
 
-  <!-- Date presentation -->
   <ng-template #date>
-    {{ dateJson$ | async | date : "MM, d-yyyy" }}</ng-template
-  >
-
-  <!-- Calendar icon -->
-  <!-- <i class="las la-calendar"></i> -->
+    {{ dateJson$ | async | date : "MM, d-yyyy" }}
+  </ng-template>
 </div>
 
-<!-- Hidden content - Start -->
+<!-- Hidden content -->
 <span class="hidden-container">
   <input [formControl]="datepickerControl" matInput [matDatepicker]="picker" />
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

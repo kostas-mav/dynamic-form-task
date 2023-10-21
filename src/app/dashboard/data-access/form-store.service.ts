@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Form } from '../form/form.component';
-import { take, tap, withLatestFrom } from 'rxjs';
+import { Subject, take, tap, withLatestFrom } from 'rxjs';
 import { SAMPLE } from 'src/mock/example-form';
 
 interface FormState {
@@ -22,6 +22,8 @@ export class FormStore extends ComponentStore<FormState> {
 
   readonly formList$ = this.select((state) => state.formList);
   readonly formPreview$ = this.select((state) => state.formPreview);
+
+  validateForm$ = new Subject<void>();
 
   addFormToList(form: Form) {
     this.formList$
