@@ -5,10 +5,6 @@
   padding: 0.25rem 0.5rem;
 }
 
-.internalMatGrid {
-  width: 100%;
-}
-
 .mat-grid-tile-content {
   width: 100%;
 }
@@ -37,7 +33,7 @@ label {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(1fr, 1fr));
   gap: 10px;
 }
 
