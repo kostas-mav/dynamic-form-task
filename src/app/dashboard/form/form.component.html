@@ -61,3 +61,11 @@
   </div>
   <ng-template #noForm>No form available</ng-template>
 </ng-container>
+
+<div *ngIf="formOutput$ | async as formOutput" class="form-output">
+  <h3>Form Output:</h3>
+  <hr />
+  <span class="form-output-item" *ngFor="let item of formOutput | keyvalue">
+    {{ item.key }}: {{ !item.value || !item.value.length ? "-" : item.value }}
+  </span>
+</div>

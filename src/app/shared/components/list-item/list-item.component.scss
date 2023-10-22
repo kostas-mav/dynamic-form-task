@@ -6,10 +6,20 @@
   border: 1px solid;
   padding: 0.5rem;
   gap: 0.5rem;
+  border-right: none;
+  border-bottom: none;
+
+  &:last-child {
+    border-bottom: 1px solid;
+  }
 }
 
 .form-title {
   width: 100%;
+  max-width: 200px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   font-weight: 700;
   cursor: default;
 }

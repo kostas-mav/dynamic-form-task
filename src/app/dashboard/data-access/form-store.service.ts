@@ -8,6 +8,7 @@ import { NonNullableFormBuilder } from '@angular/forms';
 interface FormState {
   formList: Form[];
   formPreview: Form | null;
+  formOutput: { [key: string]: string | null } | null;
 }
 
 @Injectable({
@@ -18,11 +19,13 @@ export class FormStore extends ComponentStore<FormState> {
     super({
       formList: [],
       formPreview: null,
+      formOutput: null,
     });
   }
 
   readonly formList$ = this.select((state) => state.formList);
   readonly formPreview$ = this.select((state) => state.formPreview);
+  readonly formOutput$ = this.select((state) => state.formOutput);
 
   formGroup = this.fb.group({});
   validateForm$ = new Subject<void>();
@@ -84,7 +87,15 @@ export class FormStore extends ComponentStore<FormState> {
   removeFormPreview = this.effect(($) =>
     $.pipe(
       tap(() => {
-        this.patchState({ formPreview: null });
+        this.patchState({ formPreview: null, formOutput: null });
+      })
+    )
+  );
+
+  updateFormOutput = this.effect(($) =>
+    $.pipe(
+      tap(() => {
+        this.patchState({ formOutput: this.formGroup.value });
       })
     )
   );

@@ -1,5 +1,9 @@
 <div class="form-title">{{ form.title }}</div>
 <div class="action-button-container">
-  <button appDownloadButton [form]="form">DL</button>
-  <button appButton (click)="removeList()">X</button>
+  <button appDownloadButton [form]="form">
+    <i class="las la-download"></i>
+  </button>
+  <button color="warn" appButton (click)="removeList()">
+    <i class="las la-trash-alt"></i>
+  </button>
 </div>

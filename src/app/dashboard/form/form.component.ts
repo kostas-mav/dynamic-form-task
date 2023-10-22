@@ -21,7 +21,7 @@ import { DateInputComponent } from 'src/app/shared/components/inputs/date/date-i
 import { ComboboxInputComponent } from 'src/app/shared/components/inputs/combobox/combobox-input.component';
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { FormStore } from '../data-access/form-store.service';
-import { map, tap } from 'rxjs';
+import { BehaviorSubject, map, tap } from 'rxjs';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 export interface Form {
@@ -116,8 +116,6 @@ export class FormComponent implements OnInit {
           groups: updatedGroups,
         };
 
-        console.log(this.formGroup.value);
-
         return updatedForm;
       } else {
         return form;
@@ -125,6 +123,8 @@ export class FormComponent implements OnInit {
     }),
     tap(() => setTimeout(() => this.cdRef.detectChanges()))
   );
+
+  formOutput$ = this.formStore.formOutput$;
 
   formGroup = this.formStore.formGroup;
 
@@ -134,6 +134,7 @@ export class FormComponent implements OnInit {
 
   printFormValue() {
     console.log(this.formGroup.value);
+    this.formStore.updateFormOutput();
   }
 
   addFormToList(form: Form) {
