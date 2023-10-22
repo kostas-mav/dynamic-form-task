@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Form } from 'src/app/dashboard/form/form.component';
 import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
@@ -7,11 +7,13 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
 @Component({
   selector: 'app-upload-button',
   standalone: true,
-  imports: [CommonModule,ButtonComponent],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './upload-button.component.html',
   styleUrls: ['./upload-button.component.scss'],
 })
 export class UploadButtonComponent {
+  @ViewChild('dropArea', { static: true }) dropArea!: ElementRef;
+
   selectedFile: File | undefined;
   jsonData: Form | undefined;
 
@@ -21,16 +23,26 @@ export class UploadButtonComponent {
     this._processFile();
   }
 
-  // onDrag(event: Event) {
-  //   event.preventDefault();
-  // }
+  onDragEnter(event: Event) {
+    event.preventDefault();
+
+    this.dropArea.nativeElement.style.backgroundColor = 'cyan';
+  }
+
+  onDragLeave(event: Event) {
+    event.preventDefault();
+
+    this.dropArea.nativeElement.style.backgroundColor = 'white';
+  }
 
   onDrop(event: Event) {
     event.preventDefault();
+
     const dropEvent = event as DragEvent;
     this.selectedFile = dropEvent.dataTransfer?.files[0];
-
     this._processFile();
+
+    this.dropArea.nativeElement.style.backgroundColor = 'white';
   }
 
   private _processFile() {

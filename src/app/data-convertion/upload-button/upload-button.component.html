@@ -1,9 +1,12 @@
 <div
+  #dropArea
   id="drop-area"
-  (dragover)="$event.preventDefault()"
+  (dragover)="onDragEnter($event)"
+  (dragleave)="onDragLeave($event)"
   (drop)="onDrop($event)"
 >
   <input
+    id="upload-button"
     #uploadButton
     type="file"
     (change)="onFileSelected($event)"

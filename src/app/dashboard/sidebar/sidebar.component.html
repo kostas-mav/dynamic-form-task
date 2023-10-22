@@ -4,6 +4,7 @@
       *ngFor="let form of formList"
       [form]="form"
       (remove)="removeList($event)"
+      (select)="selectFormPreview($event)"
     ></app-list-item>
   </ng-container>
 </div>

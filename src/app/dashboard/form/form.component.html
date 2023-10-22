@@ -42,9 +42,22 @@
   </form>
 
   <div class="actions-container">
-    <button appButton (click)="addFormToList(form)">Add</button>
-    <button appButton (click)="printFormValue()">Print</button>
-    <button appButton (click)="validateForm()">Validate</button>
+    <button
+      [disabled]="formGroup.invalid"
+      appButton
+      (click)="addFormToList(form)"
+    >
+      Add
+    </button>
+    <button
+      color="secondary"
+      [disabled]="formGroup.invalid"
+      appButton
+      (click)="printFormValue()"
+    >
+      Print
+    </button>
+    <button color="neutral" appButton (click)="validateForm()">Validate</button>
   </div>
   <ng-template #noForm>No form available</ng-template>
 </ng-container>

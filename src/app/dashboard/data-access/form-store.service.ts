@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Form } from '../form/form.component';
-import { Subject, take, tap, withLatestFrom } from 'rxjs';
+import { Observable, Subject, take, tap, withLatestFrom } from 'rxjs';
 import { SAMPLE } from 'src/mock/example-form';
+import { NonNullableFormBuilder } from '@angular/forms';
 
 interface FormState {
   formList: Form[];
@@ -13,53 +14,78 @@ interface FormState {
   providedIn: 'root',
 })
 export class FormStore extends ComponentStore<FormState> {
-  constructor() {
+  constructor(private fb: NonNullableFormBuilder) {
     super({
       formList: [],
-      formPreview: SAMPLE,
+      formPreview: null,
     });
   }
 
   readonly formList$ = this.select((state) => state.formList);
   readonly formPreview$ = this.select((state) => state.formPreview);
 
+  formGroup = this.fb.group({});
   validateForm$ = new Subject<void>();
 
-  addFormToList(form: Form) {
-    this.formList$
-      .pipe(
-        take(1),
-        tap((existingForms) =>
-          this.patchState({ formList: [...existingForms, form] })
-        )
-      )
-      .subscribe();
-  }
+  addFormToList = this.effect((form$: Observable<Form>) =>
+    form$.pipe(
+      withLatestFrom(this.formList$),
+      tap(([form, formList]) => {
+        const newForm: Form = JSON.parse(JSON.stringify(form));
 
-  removeFormFromList(name: string) {
-    this.formList$
-      .pipe(
-        withLatestFrom(this.formPreview$),
-        take(1),
-        tap(([existingForms, formPreview]) => {
-          const remainingForms = existingForms.filter(
-            (existingForm) => existingForm.title !== name
+        const duplicateName = formList
+          .map((form) => form.title)
+          .includes(newForm.title);
+
+        if (duplicateName)
+          newForm.title = newForm.title.concat(
+            `_${new Date().toLocaleString()}`
           );
 
-          this.patchState({ formList: remainingForms });
+        newForm.groups.forEach((group) =>
+          group.controls.forEach((control) => {
+            const pairedFormControl = this.formGroup.get(control.name);
 
-          if (formPreview && formPreview.title === name)
-            this.removeFormPreview();
-        })
-      )
-      .subscribe();
-  }
+            if (pairedFormControl)
+              control.defaultValue = pairedFormControl.value;
+          })
+        );
 
-  addFormPreview(form: Form) {
-    this.patchState({ formPreview: form });
-  }
+        this.patchState({ formList: [...formList, newForm] });
 
-  removeFormPreview() {
-    this.patchState({ formPreview: null });
-  }
+        this.removeFormPreview();
+      })
+    )
+  );
+
+  removeFormFromList = this.effect((name$: Observable<string>) =>
+    name$.pipe(
+      withLatestFrom(this.formList$, this.formPreview$),
+      tap(([name, formList, formPreview]) => {
+        const remainingForms = formList.filter(
+          (existingForm) => existingForm.title !== name
+        );
+
+        this.patchState({ formList: remainingForms });
+
+        if (formPreview && formPreview.title === name) this.removeFormPreview();
+      })
+    )
+  );
+
+  addFormPreview = this.effect((form$: Observable<Form>) =>
+    form$.pipe(
+      tap((form) => {
+        this.patchState({ formPreview: form });
+      })
+    )
+  );
+
+  removeFormPreview = this.effect(($) =>
+    $.pipe(
+      tap(() => {
+        this.patchState({ formPreview: null });
+      })
+    )
+  );
 }

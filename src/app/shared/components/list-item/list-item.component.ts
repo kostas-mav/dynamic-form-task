@@ -1,4 +1,4 @@
-import { Component, Input, Output } from '@angular/core';
+import { Component, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ButtonComponent } from '../button/button.component';
@@ -15,6 +15,11 @@ import { Form } from 'src/app/dashboard/form/form.component';
 export class ListItemComponent {
   @Input({ required: true }) form!: Form;
   @Output() remove = new Subject<string>();
+  @Output() select = new Subject<Form>();
+
+  @HostListener('click') selectItem() {
+    this.select.next(this.form);
+  }
 
   removeList() {
     this.remove.next(this.form.title);

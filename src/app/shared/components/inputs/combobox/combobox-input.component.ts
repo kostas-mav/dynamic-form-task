@@ -1,8 +1,6 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -24,22 +22,9 @@ export class ComboboxInputComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<void>();
 
   @Input() control = this.fb.control('');
-  @Input() options: string[] = ['One', 'Two', 'Three'];
+  @Input() options: string[] = [];
 
   @ViewChild('inputElRef', { static: true }) inputElRef!: ElementRef;
-
-  @HostListener('document:click', ['$event'])
-  documentClickHandler(event: MouseEvent) {
-    const clickedElement = event.target as HTMLElement;
-    const isInsideComponent = this.elRef.nativeElement.contains(clickedElement);
-    if (!isInsideComponent) {
-      this.displayOptions = false;
-    }
-  }
-
-  selectedOption: string = '';
-  componentDisabled: boolean = false;
-  displayOptions: boolean = false;
 
   changeBorderColor() {
     if (this.control.invalid) {
@@ -50,25 +35,11 @@ export class ComboboxInputComponent implements OnInit, OnDestroy {
   }
 
   updateOption(event: any) {
-    this.selectOptionHandler(event.target.value as string);
-  }
-
-  selectOptionHandler(option: string) {
-    this.selectedOption = option;
-    this.control.setValue(option);
-    this.toggleOptions();
-    this.cdRef.detectChanges();
-  }
-
-  toggleOptions() {
-    this.displayOptions = !this.displayOptions;
-    this.control.markAsTouched();
+    this.control.setValue(event.target.value as string);
   }
 
   constructor(
     private fb: NonNullableFormBuilder,
-    private elRef: ElementRef,
-    private cdRef: ChangeDetectorRef,
     private formStore: FormStore
   ) {}
 

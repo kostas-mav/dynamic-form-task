@@ -1,10 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormGroupComponent,
   Group,
 } from 'src/app/shared/components/form-group/form-group.component';
 import {
+  FormBuilder,
   FormControl,
   NonNullableFormBuilder,
   ReactiveFormsModule,
@@ -39,24 +45,48 @@ export interface Form {
   ],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent implements OnInit {
   readonly formPreview$ = this.formStore.formPreview$.pipe(
     tap((form) => {
-      if (form)
+      if (form) {
         form.groups.forEach((group) => {
           group.controls.forEach((control) => {
             const newControl = this.fb.control('');
 
-            if (control.defaultValue) newControl.setValue(control.defaultValue);
+            if (control.type !== 'combobox') {
+              if (control.defaultValue)
+                newControl.setValue(control.defaultValue);
 
-            if (control.required) newControl.addValidators(Validators.required);
+              if (control.required)
+                newControl.addValidators(Validators.required);
 
-            if (control.readonly) newControl.disable();
+              if (control.readonly) newControl.disable();
 
-            this.formGroup.addControl(control.name, newControl);
+              this.formGroup.setControl(control.name, newControl);
+            } else {
+              let valueFoundInData: boolean = false;
+
+              if (control.data && control.defaultValue)
+                valueFoundInData = control.data.includes(control.defaultValue);
+
+              if (control.defaultValue && valueFoundInData) {
+                newControl.setValue(control.defaultValue);
+              } else {
+                newControl.setValue(null);
+              }
+
+              if (control.required)
+                newControl.addValidators(Validators.required);
+
+              if (control.readonly) newControl.disable();
+
+              this.formGroup.setControl(control.name, newControl);
+            }
           });
         });
+      }
     }),
     map((form) => {
       if (form) {
@@ -86,14 +116,17 @@ export class FormComponent implements OnInit {
           groups: updatedGroups,
         };
 
+        console.log(this.formGroup.value);
+
         return updatedForm;
       } else {
         return form;
       }
-    })
+    }),
+    tap(() => setTimeout(() => this.cdRef.detectChanges()))
   );
 
-  formGroup = this.fb.group({});
+  formGroup = this.formStore.formGroup;
 
   getControl(name: string) {
     return this.formGroup.get(name) as FormControl;
@@ -112,11 +145,12 @@ export class FormComponent implements OnInit {
   }
 
   constructor(
-    private fb: NonNullableFormBuilder,
-    private formStore: FormStore
+    private fb: FormBuilder,
+    private formStore: FormStore,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    this.formGroup.valueChanges.subscribe(console.log);
+    // this.formGroup.valueChanges.subscribe(console.log);
   }
 }

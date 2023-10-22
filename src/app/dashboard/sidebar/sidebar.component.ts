@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListItemComponent } from 'src/app/shared/components/list-item/list-item.component';
 import { FormStore } from '../data-access/form-store.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { UploadButtonComponent } from 'src/app/data-convertion/upload-button/upload-button.component';
+import { Form } from '../form/form.component';
 
 @Component({
   selector: 'app-sidebar',
@@ -24,5 +25,10 @@ export class SidebarComponent {
     this.formStore.removeFormFromList(name);
   }
 
-  constructor(private formStore: FormStore) {}
+  selectFormPreview(form: Form) {
+    this.formStore.removeFormPreview();
+    this.formStore.addFormPreview(form);
+  }
+
+  constructor(private formStore: FormStore, private cdRef: ChangeDetectorRef) {}
 }
