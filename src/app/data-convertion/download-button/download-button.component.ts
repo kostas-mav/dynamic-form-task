@@ -28,7 +28,7 @@ export class DownloadButtonComponent {
   @Input({ required: true }) form!: Form;
 
   @HostListener('click') downloadJsonFile() {
-    const jsonContent = JSON.stringify(this.form, null, 2); // Use null and 2 for pretty-printing
+    const jsonContent = JSON.stringify(this.form, null, 2);
 
     // Create a Blob for the JSON content
     const blob = new Blob([jsonContent], { type: 'application/json' });
@@ -40,13 +40,11 @@ export class DownloadButtonComponent {
     const a = document.createElement('a');
     a.href = url;
 
-    // Specify the filename for the downloaded file (e.g., based on a property of the object)
+    // Specify the filename
     a.download = `${this.form.title}.json`;
 
-    // Simulate a click on the anchor to trigger the download
+    // Τrigger the download
     a.click();
-
-    // Release the object URL
     window.URL.revokeObjectURL(url);
   }
 }

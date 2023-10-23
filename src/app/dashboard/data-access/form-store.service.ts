@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Form } from '../form/form.component';
-import { Observable, Subject, take, tap, withLatestFrom } from 'rxjs';
+import { Observable, Subject, tap, withLatestFrom } from 'rxjs';
 import { NonNullableFormBuilder } from '@angular/forms';
 
 interface FormState {
