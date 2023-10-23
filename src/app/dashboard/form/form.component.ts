@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  OnInit,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -12,7 +11,6 @@ import {
 import {
   FormBuilder,
   FormControl,
-  NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -21,8 +19,9 @@ import { DateInputComponent } from 'src/app/shared/components/inputs/date/date-i
 import { ComboboxInputComponent } from 'src/app/shared/components/inputs/combobox/combobox-input.component';
 import { MaterialModule } from 'src/app/shared/utils/material/material.module';
 import { FormStore } from '../data-access/form-store.service';
-import { BehaviorSubject, map, tap } from 'rxjs';
+import { map, tap } from 'rxjs';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { FormControlComponent } from 'src/app/shared/components/form-control/form-control.component';
 
 export interface Form {
   title: string;
@@ -38,6 +37,7 @@ export interface Form {
     ReactiveFormsModule,
     MaterialModule,
     FormGroupComponent,
+    FormControlComponent,
     TextInputComponent,
     DateInputComponent,
     ComboboxInputComponent,
@@ -47,10 +47,11 @@ export interface Form {
   styleUrls: ['./form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormComponent implements OnInit {
+export class FormComponent {
   readonly formPreview$ = this.formStore.formPreview$.pipe(
     tap((form) => {
       if (form) {
+        // Set form controls for every item
         form.groups.forEach((group) => {
           group.controls.forEach((control) => {
             const newControl = this.fb.control('');
@@ -58,14 +59,9 @@ export class FormComponent implements OnInit {
             if (control.type !== 'combobox') {
               if (control.defaultValue)
                 newControl.setValue(control.defaultValue);
-
-              if (control.required)
-                newControl.addValidators(Validators.required);
-
-              if (control.readonly) newControl.disable();
-
-              this.formGroup.setControl(control.name, newControl);
             } else {
+              // Check if the default value is valid and exists in the data of
+              // the combobox input
               let valueFoundInData: boolean = false;
 
               if (control.data && control.defaultValue)
@@ -76,20 +72,20 @@ export class FormComponent implements OnInit {
               } else {
                 newControl.setValue(null);
               }
-
-              if (control.required)
-                newControl.addValidators(Validators.required);
-
-              if (control.readonly) newControl.disable();
-
-              this.formGroup.setControl(control.name, newControl);
             }
+
+            // Set control statuses
+            if (control.required) newControl.addValidators(Validators.required);
+            if (control.readonly) newControl.disable();
+
+            this.formGroup.setControl(control.name, newControl);
           });
         });
       }
     }),
     map((form) => {
       if (form) {
+        // Sort controls within groups by order if applicable
         const updatedGroups = form.groups.map((group) => {
           const orderedControls = group.controls.filter(
             (obj) => obj.order !== undefined
@@ -121,11 +117,11 @@ export class FormComponent implements OnInit {
         return form;
       }
     }),
+    // JavaScript magic to update action button disabled state
     tap(() => setTimeout(() => this.cdRef.detectChanges()))
   );
 
   formOutput$ = this.formStore.formOutput$;
-
   formGroup = this.formStore.formGroup;
 
   getControl(name: string) {
@@ -133,7 +129,7 @@ export class FormComponent implements OnInit {
   }
 
   printFormValue() {
-    console.log(this.formGroup.value);
+    // console.log(this.formGroup.value);
     this.formStore.updateFormOutput();
   }
 
@@ -150,8 +146,4 @@ export class FormComponent implements OnInit {
     private formStore: FormStore,
     private cdRef: ChangeDetectorRef
   ) {}
-
-  ngOnInit(): void {
-    // this.formGroup.valueChanges.subscribe(console.log);
-  }
 }

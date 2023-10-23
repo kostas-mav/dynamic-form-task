@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TextInputComponent } from '../inputs/text/text-input.component';
 import { DateInputComponent } from '../inputs/date/date-input.component';
 import { ComboboxInputComponent } from '../inputs/combobox/combobox-input.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 export interface Control {
   title: string;
@@ -32,4 +32,9 @@ export interface Control {
 })
 export class FormControlComponent {
   @Input({ required: true }) control!: Control;
+  @Input({ required: true }) formGroup!: FormGroup;
+
+  getControl(name: string) {
+    return this.formGroup.get(name) as FormControl;
+  }
 }

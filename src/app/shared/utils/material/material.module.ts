@@ -17,6 +17,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatInputModule,
     MatAutocompleteModule,
     MatGridListModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatDatepickerModule,
@@ -24,6 +25,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     MatInputModule,
     MatAutocompleteModule,
     MatGridListModule,
+    MatAutocompleteModule,
   ],
 })
 export class MaterialModule {}

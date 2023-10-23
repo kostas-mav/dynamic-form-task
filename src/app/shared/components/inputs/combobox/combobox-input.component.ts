@@ -1,20 +1,27 @@
-import {
-  Component,
-  ElementRef,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
-import { Subject, takeUntil, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Subject,
+  skip,
+  startWith,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
+import { TextInputComponent } from '../text/text-input.component';
+import { ClickOutsideDirective } from 'src/app/shared/directives/click-outside/click-outside.directive';
 
 @Component({
   selector: 'app-combobox-input',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    TextInputComponent,
+    ClickOutsideDirective,
+  ],
   templateUrl: './combobox-input.component.html',
   styleUrls: ['./combobox-input.component.scss'],
 })
@@ -24,30 +31,34 @@ export class ComboboxInputComponent implements OnInit, OnDestroy {
   @Input() control = this.fb.control('');
   @Input() options: string[] = [];
 
-  @ViewChild('inputElRef', { static: true }) inputElRef!: ElementRef;
+  displayedOptions$ = new BehaviorSubject<string[]>([]);
 
-  changeBorderColor() {
-    if (this.control.invalid) {
-      this.inputElRef.nativeElement.style.borderColor = 'red';
-    } else {
-      this.inputElRef.nativeElement.style.borderColor = 'green';
-    }
+  dropdownEnabled$ = new BehaviorSubject<boolean>(false);
+
+  handleClickOutside(event: Event) {
+    this.dropdownEnabled$.next(false);
   }
 
-  updateOption(event: any) {
-    this.control.setValue(event.target.value as string);
+  updateControl(event: any) {
+    this.control.setValue(event);
+    this.dropdownEnabled$.next(false);
   }
 
-  constructor(
-    private fb: NonNullableFormBuilder,
-    private formStore: FormStore
-  ) {}
+  constructor(private fb: NonNullableFormBuilder) {}
 
   ngOnInit(): void {
-    this.formStore.validateForm$
+    // Filter the displayed options by the input value
+    this.control.valueChanges
       .pipe(
         takeUntil(this._destroy$),
-        tap(() => this.changeBorderColor())
+        startWith(''),
+        tap((val) => {
+          const validOptions = this.options.filter((option) =>
+            option.toLowerCase().includes(val.toLowerCase())
+          );
+
+          this.displayedOptions$.next(validOptions);
+        })
       )
       .subscribe();
   }

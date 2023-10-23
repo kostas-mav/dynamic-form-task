@@ -1,4 +1,21 @@
-<select #inputElRef (change)="updateOption($event)" [formControl]="control">
-  <option [value]="null">-- Select an option</option>
-  <option *ngFor="let option of options" [value]="option">{{ option }}</option>
-</select>
+<div appClickOutside (appClickOutside)="handleClickOutside($event)">
+  <app-text-input
+    [control]="control"
+    (clicked)="dropdownEnabled$.next(true)"
+  ></app-text-input>
+
+  <ng-container *ngIf="displayedOptions$ | async as displayedOptions">
+    <div
+      *ngIf="(dropdownEnabled$ | async) && displayedOptions.length"
+      class="dropdown"
+    >
+      <div
+        *ngFor="let option of displayedOptions"
+        (click)="updateControl(option)"
+        class="dropdown-option"
+      >
+        {{ option }}
+      </div>
+    </div>
+  </ng-container>
+</div>

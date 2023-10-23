@@ -1,9 +1,11 @@
-<mat-grid-list cols="4" rowHeight="100px">
-  <mat-grid-tile
+<div class="group-title">{{ group.title }}</div>
+<div class="inner-grid-container">
+  <div
+    class="inner-grid-item"
     *ngFor="let control of group.controls"
-    [colspan]="control.span"
-    [rowspan]="1"
+    [ngStyle]="{ 'grid-column-end': 'span ' + control.span }"
   >
-    <app-form-control [control]="control"></app-form-control>
-  </mat-grid-tile>
-</mat-grid-list>
+    <app-form-control [formGroup]="formGroup" [control]="control">
+    </app-form-control>
+  </div>
+</div>

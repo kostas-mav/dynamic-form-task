@@ -30,7 +30,7 @@ export class DownloadButtonComponent {
   @HostListener('click') downloadJsonFile() {
     const jsonContent = JSON.stringify(this.form, null, 2); // Use null and 2 for pretty-printing
 
-    // Create a Blob (Binary Large Object) with the JSON content
+    // Create a Blob for the JSON content
     const blob = new Blob([jsonContent], { type: 'application/json' });
 
     // Create an object URL for the Blob

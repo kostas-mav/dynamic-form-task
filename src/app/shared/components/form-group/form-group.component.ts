@@ -4,7 +4,7 @@ import {
   Control,
   FormControlComponent,
 } from '../form-control/form-control.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../../utils/material/material.module';
 
 export interface Group {
@@ -28,4 +28,5 @@ export interface Group {
 })
 export class FormGroupComponent {
   @Input({ required: true }) group!: Group;
+  @Input({ required: true }) formGroup!: FormGroup;
 }

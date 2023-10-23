@@ -7,7 +7,18 @@ import { FormComponent } from './form/form.component';
   selector: 'app-dashboard',
   standalone: true,
   imports: [CommonModule, SidebarComponent, FormComponent],
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss'],
+  template: `
+    <app-sidebar></app-sidebar>
+    <app-form></app-form>
+  `,
+  styles: [
+    `
+      :host {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+      }
+    `,
+  ],
 })
 export class DashboardComponent {}

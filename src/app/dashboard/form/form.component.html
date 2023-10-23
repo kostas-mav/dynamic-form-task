@@ -1,46 +1,19 @@
 <ng-container *ngIf="formPreview$ | async as form">
+  <!-- Title -->
   <div class="form-title">{{ form.title }}</div>
-  <form
-    *ngIf="form; else noForm"
-    [formGroup]="formGroup"
-    class="grid-container"
-  >
+
+  <!-- Form -->
+  <form [formGroup]="formGroup" class="grid-container">
     <div
       class="grid-item"
       *ngFor="let group of form.groups"
       [ngStyle]="{ 'grid-column-end': 'span ' + group.span }"
     >
-      <div class="group-title">{{ group.title }}</div>
-      <div class="inner-grid-container">
-        <div
-          class="inner-grid-item"
-          *ngFor="let control of group.controls"
-          [ngStyle]="{ 'grid-column-end': 'span ' + control.span }"
-        >
-          <label>
-            <span> {{ control.title }} {{ control.required ? "*" : "" }} </span>
-
-            <app-text-input
-              *ngIf="control.type === 'text'"
-              [control]="getControl(control.name)"
-            ></app-text-input>
-
-            <app-date-input
-              *ngIf="control.type === 'date'"
-              [control]="getControl(control.name)"
-            ></app-date-input>
-
-            <app-combobox-input
-              *ngIf="control.type === 'combobox'"
-              [control]="getControl(control.name)"
-              [options]="control.data ?? []"
-            ></app-combobox-input>
-          </label>
-        </div>
-      </div>
+      <app-form-group [formGroup]="formGroup" [group]="group"></app-form-group>
     </div>
   </form>
 
+  <!-- Actions -->
   <div class="actions-container">
     <button
       [disabled]="formGroup.invalid"
@@ -49,6 +22,7 @@
     >
       Add
     </button>
+
     <button
       color="secondary"
       [disabled]="formGroup.invalid"
@@ -57,11 +31,12 @@
     >
       Print
     </button>
+
     <button color="neutral" appButton (click)="validateForm()">Validate</button>
   </div>
-  <ng-template #noForm>No form available</ng-template>
 </ng-container>
 
+<!-- Output Display -->
 <div *ngIf="formOutput$ | async as formOutput" class="form-output">
   <h3>Form Output:</h3>
   <hr />

@@ -45,6 +45,8 @@ export class UploadButtonComponent {
     this.dropArea.nativeElement.style.backgroundColor = 'white';
   }
 
+  constructor(private formStore: FormStore) {}
+
   private _processFile() {
     if (this.selectedFile) {
       const reader = new FileReader();
@@ -54,7 +56,7 @@ export class UploadButtonComponent {
           this.jsonData = JSON.parse(event.target!.result as string);
           if (this.jsonData) this.formStore.addFormPreview(this.jsonData);
         } catch (error) {
-          console.error('Error parsing JSON:', error);
+          console.error('Error parsing file:', error);
         }
       };
 
@@ -63,6 +65,4 @@ export class UploadButtonComponent {
       console.error('No file selected.');
     }
   }
-
-  constructor(private formStore: FormStore) {}
 }

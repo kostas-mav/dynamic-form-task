@@ -5,22 +5,17 @@ import { BehaviorSubject, Subject, merge, takeUntil, tap } from 'rxjs';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { isEmpty } from 'lodash';
 import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
+import { ButtonComponent } from '../../button/button.component';
 
 @Component({
   selector: 'app-date-input',
   standalone: true,
-  imports: [CommonModule, MaterialModule, ReactiveFormsModule],
+  imports: [CommonModule, MaterialModule, ReactiveFormsModule, ButtonComponent],
   templateUrl: './date-input.component.html',
   styleUrls: ['./date-input.component.scss'],
 })
 export class DateInputComponent {
   private _destroy$ = new Subject<null>();
-
-  private _setControlValue(value: string) {
-    this.control.markAsTouched();
-    this.control.markAsDirty();
-    this.control.setValue(value);
-  }
 
   @Input() control = this.fb.control('');
   @Input() placeholder = 'Pick a date';
@@ -59,7 +54,12 @@ export class DateInputComponent {
     }
 
     merge(
-      this.formStore.validateForm$.pipe(tap(() => this.changeBorderColor())),
+      // Listen for the validate action
+      this.formStore.validateForm$.pipe(
+        takeUntil(this._destroy$),
+        tap(() => this.changeBorderColor())
+      ),
+
       this.datepickerControl.valueChanges.pipe(
         takeUntil(this._destroy$),
         tap((val: Date | null) => {
@@ -88,7 +88,14 @@ export class DateInputComponent {
     ).subscribe();
   }
 
+  // Ensure all subscriptions are unsubscribed
   ngOnDestroy(): void {
     this._destroy$.next(null);
+  }
+
+  private _setControlValue(value: string) {
+    this.control.markAsTouched();
+    this.control.markAsDirty();
+    this.control.setValue(value);
   }
 }

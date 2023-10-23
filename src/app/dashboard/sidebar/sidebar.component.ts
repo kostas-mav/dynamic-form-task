@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListItemComponent } from 'src/app/shared/components/list-item/list-item.component';
 import { FormStore } from '../data-access/form-store.service';
@@ -26,9 +26,11 @@ export class SidebarComponent {
   }
 
   selectFormPreview(form: Form) {
+    // In case of navigating through multiple items, clear the form preview
+    // first
     this.formStore.removeFormPreview();
     this.formStore.addFormPreview(form);
   }
 
-  constructor(private formStore: FormStore, private cdRef: ChangeDetectorRef) {}
+  constructor(private formStore: FormStore) {}
 }
