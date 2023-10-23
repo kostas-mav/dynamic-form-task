@@ -54,7 +54,7 @@ export class UploadButtonComponent {
       reader.onload = (event) => {
         try {
           this.jsonData = JSON.parse(event.target!.result as string);
-          if (this.jsonData) this.formStore.addFormPreview(this.jsonData);
+          if (this.jsonData) this.formStore.addFormToList(this.jsonData);
         } catch (error) {
           console.error('Error parsing file:', error);
         }
