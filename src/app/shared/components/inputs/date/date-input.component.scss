@@ -1,5 +1,7 @@
 :host {
-  display: inline-block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   border: 2px solid;
   border-radius: 6px;
@@ -36,6 +38,7 @@
 // Button
 .button {
   display: flex;
+  width: 100%;
   gap: 1rem;
   align-items: center;
   border-radius: 4px;
@@ -56,4 +59,10 @@
     color: var(--primary);
     font-size: 1.5rem;
   }
+}
+
+.cancel-button {
+  padding-right: 0.5rem;
+  color: var(--warn);
+  cursor: pointer;
 }

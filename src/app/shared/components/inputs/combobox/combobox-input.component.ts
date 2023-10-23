@@ -1,15 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NonNullableFormBuilder, ReactiveFormsModule } from '@angular/forms';
-import {
-  BehaviorSubject,
-  Subject,
-  skip,
-  startWith,
-  takeUntil,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { BehaviorSubject, Subject, startWith, takeUntil, tap } from 'rxjs';
 import { TextInputComponent } from '../text/text-input.component';
 import { ClickOutsideDirective } from 'src/app/shared/directives/click-outside/click-outside.directive';
 

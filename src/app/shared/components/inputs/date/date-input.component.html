@@ -7,22 +7,15 @@
     {{ dateJson$ | async | date : "MM, d-yyyy" }}
   </ng-template>
 </div>
+<div (click)="clearControl()" class="cancel-button">X</div>
 
 <!-- Hidden calendar content -->
 <span class="hidden-container">
   <input [formControl]="datepickerControl" matInput [matDatepicker]="picker" />
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker #picker>
-    <mat-datepicker-actions>
-      <button
-        appButton
-        color="secondary"
-        (click)="clearControl()"
-        matDatepickerCancel
-      >
-        Clear
-      </button>
+    <!-- <mat-datepicker-actions>
       <button appButton color="secondary" matDatepickerApply>Apply</button>
-    </mat-datepicker-actions></mat-datepicker
-  >
+    </mat-datepicker-actions> -->
+  </mat-datepicker>
 </span>
