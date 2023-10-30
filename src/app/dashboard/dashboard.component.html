@@ -1,0 +1,54 @@
+<app-sidebar
+  [formList]="formList"
+  (upload)="addFormToList($event)"
+  (select)="removeFormPreview(); addFormPreview($event)"
+  (remove)="removeFormFromList($event)"
+></app-sidebar>
+
+<app-form
+  *ngIf="formPreview"
+  [formGroup]="formGroup"
+  [formPreview]="formPreview"
+  [formOutput]="formOutput"
+>
+  <ng-template appFormHeader>
+    <div class="form-title-container" (dblclick)="toggleTitleEdit()">
+      <app-text-input
+        *ngIf="titleEditable; else staticTitle"
+        [formControl]="titleControl"
+        (keyup)="toggleTitleEdit($event)"
+      ></app-text-input>
+
+      <ng-template #staticTitle>
+        <div class="form-title">
+          {{ titleControl.value }}
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+
+  <ng-template appFormFooter>
+    <div class="actions-container">
+      <button
+        [disabled]="formGroup.invalid"
+        appButton
+        (click)="addFormToList(formPreview)"
+      >
+        Add
+      </button>
+
+      <button
+        color="secondary"
+        [disabled]="formGroup.invalid"
+        appButton
+        (click)="updateFormOutput()"
+      >
+        Print
+      </button>
+
+      <button color="neutral" appButton (click)="validateForm()">
+        Validate
+      </button>
+    </div>
+  </ng-template>
+</app-form>

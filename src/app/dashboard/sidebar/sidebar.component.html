@@ -1,12 +1,10 @@
 <div class="list-container">
-  <ng-container *ngIf="formList$ | async as formList">
-    <app-list-item
-      *ngFor="let form of formList"
-      [form]="form"
-      (remove)="removeList($event)"
-      (select)="selectFormPreview($event)"
-    ></app-list-item>
-  </ng-container>
+  <app-list-item
+    *ngFor="let form of formList"
+    [form]="form"
+    (remove)="remove.next($event)"
+    (select)="select.next($event)"
+  ></app-list-item>
 </div>
 
-<app-upload-button></app-upload-button>
+<app-upload-button (upload)="upload.next($event)"></app-upload-button>

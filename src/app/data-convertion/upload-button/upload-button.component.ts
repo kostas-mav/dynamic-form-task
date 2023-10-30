@@ -1,7 +1,12 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Form } from 'src/app/dashboard/form/form.component';
-import { FormStore } from 'src/app/dashboard/data-access/form-store.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 
 @Component({
@@ -12,6 +17,8 @@ import { ButtonComponent } from 'src/app/shared/components/button/button.compone
   styleUrls: ['./upload-button.component.scss'],
 })
 export class UploadButtonComponent {
+  @Output() upload = new EventEmitter<Form>();
+
   @ViewChild('dropArea', { static: true }) dropArea!: ElementRef;
 
   selectedFile: File | undefined;
@@ -45,8 +52,6 @@ export class UploadButtonComponent {
     this.dropArea.nativeElement.style.backgroundColor = 'white';
   }
 
-  constructor(private formStore: FormStore) {}
-
   private _processFile() {
     if (this.selectedFile) {
       const reader = new FileReader();
@@ -54,7 +59,7 @@ export class UploadButtonComponent {
       reader.onload = (event) => {
         try {
           this.jsonData = JSON.parse(event.target!.result as string);
-          if (this.jsonData) this.formStore.addFormToList(this.jsonData);
+          if (this.jsonData) this.upload.next(this.jsonData);
         } catch (error) {
           console.error('Error parsing file:', error);
         }

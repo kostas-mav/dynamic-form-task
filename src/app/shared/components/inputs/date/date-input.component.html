@@ -1,6 +1,6 @@
 <div (click)="picker.open()" matRipple class="button">
   <span *ngIf="(dateJson$ | async) === ''; else date" class="placeholder">
-    {{ placeholder }}
+    Pick a date
   </span>
 
   <ng-template #date>
@@ -13,9 +13,5 @@
 <span class="hidden-container">
   <input [formControl]="datepickerControl" matInput [matDatepicker]="picker" />
   <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-  <mat-datepicker #picker>
-    <!-- <mat-datepicker-actions>
-      <button appButton color="secondary" matDatepickerApply>Apply</button>
-    </mat-datepicker-actions> -->
-  </mat-datepicker>
+  <mat-datepicker #picker> </mat-datepicker>
 </span>

@@ -1,6 +1,9 @@
 <input
-  #inputElRef
-  [formControl]="control"
-  [disabled]="control.disabled"
   type="text"
+  [value]="value"
+  [readonly]="disabled"
+  (input)="setValue($event)"
+  (click)="click.next($event)"
+  (blur)="onTouch(); blur.next($event)"
+  (keyup)="keyup.next($event)"
 />

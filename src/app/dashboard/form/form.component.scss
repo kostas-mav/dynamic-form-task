@@ -5,6 +5,17 @@
   padding: 0.25rem 0.5rem;
 }
 
+.dashboard-container {
+  display: flex;
+  width: 100%;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 .form-title {
   width: 100%;
   text-align: start;
@@ -22,14 +33,6 @@
 .grid-item {
   display: inline-block;
   text-align: center;
-}
-
-.actions-container {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 0.5rem;
 }
 
 .form-output {

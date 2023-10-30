@@ -1,7 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListItemComponent } from 'src/app/shared/components/list-item/list-item.component';
-import { FormStore } from '../data-access/form-store.service';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { UploadButtonComponent } from 'src/app/data-convertion/upload-button/upload-button.component';
 import { Form } from '../form/form.component';
@@ -19,18 +18,9 @@ import { Form } from '../form/form.component';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent {
-  formList$ = this.formStore.formList$;
+  @Input() formList: Form[] = [];
 
-  removeList(name: string) {
-    this.formStore.removeFormFromList(name);
-  }
-
-  selectFormPreview(form: Form) {
-    // In case of navigating through multiple items, clear the form preview
-    // first
-    this.formStore.removeFormPreview();
-    this.formStore.addFormPreview(form);
-  }
-
-  constructor(private formStore: FormStore) {}
+  @Output() remove = new EventEmitter<string>();
+  @Output() select = new EventEmitter<Form>();
+  @Output() upload = new EventEmitter<Form>();
 }

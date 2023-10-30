@@ -1,17 +1,19 @@
-<span>{{ control.title }} {{ control.required ? "*" : "" }}</span>
+<ng-container [formGroup]="formGroup">
+  <span>{{ control.title }} {{ control.required ? "*" : "" }}</span>
 
-<app-text-input
-  *ngIf="control.type === 'text'"
-  [control]="getControl(control.name)"
-></app-text-input>
+  <app-text-input
+    *ngIf="control.type === 'text'"
+    [formControlName]="control.name"
+  ></app-text-input>
 
-<app-date-input
-  *ngIf="control.type === 'date'"
-  [control]="getControl(control.name)"
-></app-date-input>
+  <app-date-input
+    *ngIf="control.type === 'date'"
+    [formControlName]="control.name"
+  ></app-date-input>
 
-<app-combobox-input
-  *ngIf="control.type === 'combobox'"
-  [control]="getControl(control.name)"
-  [options]="control.data ?? []"
-></app-combobox-input>
+  <app-combobox-input
+    *ngIf="control.type === 'combobox'"
+    [formControlName]="control.name"
+    [options]="control.data ?? []"
+  ></app-combobox-input>
+</ng-container>

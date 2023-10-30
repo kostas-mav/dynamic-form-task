@@ -1,7 +1,7 @@
 <div appClickOutside (appClickOutside)="handleClickOutside($event)">
   <app-text-input
-    [control]="control"
-    (clicked)="dropdownEnabled$.next(true)"
+    [formControl]="textInputControl"
+    (click)="dropdownEnabled$.next(true)"
   ></app-text-input>
 
   <ng-container *ngIf="displayedOptions$ | async as displayedOptions">
@@ -11,7 +11,7 @@
     >
       <div
         *ngFor="let option of displayedOptions"
-        (click)="updateControl(option)"
+        (click)="setValue(option)"
         class="dropdown-option"
       >
         {{ option }}

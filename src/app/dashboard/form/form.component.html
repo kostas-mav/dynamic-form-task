@@ -1,46 +1,54 @@
-<ng-container *ngIf="formPreview$ | async as form">
-  <!-- Title -->
-  <div class="form-title">{{ form.title }}</div>
+<div class="dashboard-container">
+  <ng-content select=".left-sidebar"></ng-content>
 
-  <!-- Form -->
-  <form [formGroup]="formGroup" class="grid-container">
-    <div
-      class="grid-item"
-      *ngFor="let group of form.groups"
-      [ngStyle]="{ 'grid-column-end': 'span ' + group.span }"
-    >
-      <app-form-group [formGroup]="formGroup" [group]="group"></app-form-group>
-    </div>
-  </form>
+  <div class="form-container">
+    <ng-container *ngIf="formPreview">
+      <!-- Title -->
+      <ng-container *ngIf="headerTemplate; else defaultTitle">
+        <ng-container
+          *ngTemplateOutlet="headerTemplate; context: formPreview"
+        ></ng-container>
+      </ng-container>
 
-  <!-- Actions -->
-  <div class="actions-container">
-    <button
-      [disabled]="formGroup.invalid"
-      appButton
-      (click)="addFormToList(form)"
-    >
-      Add
-    </button>
+      <ng-template #defaultTitle>
+        <div class="form-title">Default Fallback Title</div>
+      </ng-template>
 
-    <button
-      color="secondary"
-      [disabled]="formGroup.invalid"
-      appButton
-      (click)="printFormValue()"
-    >
-      Print
-    </button>
+      <!-- Form -->
+      <form [formGroup]="formGroup" class="grid-container">
+        <div
+          class="grid-item"
+          *ngFor="let group of formPreview.groups"
+          [ngStyle]="{ 'grid-column-end': 'span ' + group.span }"
+        >
+          <app-form-group
+            [formGroup]="formGroup"
+            [group]="group"
+          ></app-form-group>
+        </div>
+      </form>
 
-    <button color="neutral" appButton (click)="validateForm()">Validate</button>
+      <ng-container *ngIf="footerTemplate">
+        <ng-container
+          *ngTemplateOutlet="footerTemplate; context: { formPreview }"
+        ></ng-container>
+      </ng-container>
+
+      <!-- Output Display -->
+      <div *ngIf="formOutput" class="form-output">
+        <h3>Form Output:</h3>
+        <hr />
+        <span
+          class="form-output-item"
+          *ngFor="let item of formOutput | keyvalue"
+        >
+          {{ item.key }}:
+          {{ !item.value || !item.value.length ? "-" : item.value }}
+        </span>
+      </div>
+    </ng-container>
   </div>
-</ng-container>
+  <!-- Actions -->
 
-<!-- Output Display -->
-<div *ngIf="formOutput$ | async as formOutput" class="form-output">
-  <h3>Form Output:</h3>
-  <hr />
-  <span class="form-output-item" *ngFor="let item of formOutput | keyvalue">
-    {{ item.key }}: {{ !item.value || !item.value.length ? "-" : item.value }}
-  </span>
+  <ng-content select=".right-sidebar"></ng-content>
 </div>
