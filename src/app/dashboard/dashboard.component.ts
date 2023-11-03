@@ -1,19 +1,15 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { Form, FormComponent } from './form/form.component';
+import { Form, FormComponent } from '../shared/components/form/form.component';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Group } from '../shared/components/form-group/form-group.component';
 import { FormHeaderDirective } from '../shared/directives/form/form-header.directive';
 import { FormFooterDirective } from '../shared/directives/form/form-footer.directive';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { TextInputComponent } from '../shared/components/inputs/text/text-input.component';
 import { includedInDataValidator } from '../shared/utils/validators/value-in-data.validator';
+import { sortFormGroupsByOrder } from '../shared/utils/functions/sort-form-groups-by-order';
+import { FormOutputComponent } from '../shared/components/form-output/form-output.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,13 +23,12 @@ import { includedInDataValidator } from '../shared/utils/validators/value-in-dat
     TextInputComponent,
     FormHeaderDirective,
     FormFooterDirective,
+    FormOutputComponent,
   ],
   templateUrl: 'dashboard.component.html',
   styleUrls: ['dashboard.component.scss'],
 })
 export class DashboardComponent {
-  @ViewChild(FormComponent, { read: ElementRef }) formElement!: ElementRef;
-
   formList: Form[] = [];
   formPreview: Form | null = null;
   formOutput: { [key: string]: string | null } | null = null;
@@ -48,7 +43,23 @@ export class DashboardComponent {
     }
   }
 
-  validateForm() {}
+  updateFormValidityDisplay() {
+    const elementsByDirective = this.elRef.nativeElement.querySelectorAll(
+      '[appFormControlHighlight]'
+    );
+
+    elementsByDirective.forEach((el: HTMLElement) => {
+      if (el.classList.contains('ng-invalid')) {
+        el.classList.remove('valid-control');
+        el.classList.add('invalid-control');
+      }
+
+      if (el.classList.contains('ng-valid')) {
+        el.classList.remove('invalid-control');
+        el.classList.add('valid-control');
+      }
+    });
+  }
 
   addFormToList(form: Form | null) {
     if (form === null) return;
@@ -99,6 +110,8 @@ export class DashboardComponent {
           if (control.type !== 'combobox') {
             if (control.defaultValue) {
               newControl.setValue(control.defaultValue);
+            } else {
+              newControl.setValue('');
             }
           } else {
             // Check if the default value is valid and exists in the data of
@@ -136,7 +149,7 @@ export class DashboardComponent {
       });
 
       this.titleControl.setValue(form.title);
-      this.formPreview = this._sortFormGroupByOrder(form);
+      this.formPreview = sortFormGroupsByOrder(form);
     }
   }
 
@@ -153,7 +166,7 @@ export class DashboardComponent {
   }
 
   updateFormOutput() {
-    this.formOutput = this.formGroup.value;
+    this.formOutput = this.formGroup.getRawValue();
   }
 
   removeFormPreview() {
@@ -162,35 +175,5 @@ export class DashboardComponent {
     this.formOutput = null;
   }
 
-  constructor(private fb: FormBuilder) {}
-
-  private _sortFormGroupByOrder(form: Form) {
-    const updatedGroups: Group[] = form.groups.map((group) => {
-      const orderedControls = group.controls.filter(
-        (obj) => obj.order !== undefined
-      );
-
-      if (orderedControls.length) {
-        orderedControls.sort(
-          (a, b) => (a.order as number) - (b.order as number)
-        );
-      }
-
-      const unorderedControls = group.controls.filter(
-        (obj) => obj.order === undefined
-      );
-
-      return {
-        ...group,
-        controls: orderedControls.concat(unorderedControls),
-      };
-    });
-
-    const updatedForm: Form = {
-      ...form,
-      groups: updatedGroups,
-    };
-
-    return updatedForm;
-  }
+  constructor(private fb: FormBuilder, private elRef: ElementRef) {}
 }

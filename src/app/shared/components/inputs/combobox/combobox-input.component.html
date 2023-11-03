@@ -1,5 +1,6 @@
 <div appClickOutside (appClickOutside)="handleClickOutside($event)">
   <app-text-input
+    #textInputElement
     [formControl]="textInputControl"
     (click)="dropdownEnabled$.next(true)"
   ></app-text-input>

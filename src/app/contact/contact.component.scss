@@ -1,0 +1,13 @@
+.category-combobox {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+
+  .form-title {
+    width: 100%;
+    text-align: start;
+    font-weight: 700;
+    font-size: 1.5rem;
+  }
+}

@@ -6,8 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Form } from 'src/app/dashboard/form/form.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
+import { Form } from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: 'app-upload-button',

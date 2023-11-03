@@ -11,19 +11,18 @@ import {
  */
 export function includedInDataValidator(data: string[]): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
-    const required = control.hasValidator(Validators.required);
-    const value = control.value as string;
-
-    if (required && value.length && !data.includes(value)) {
-      return {
-        invalidData: true,
-      };
-    } else if (!required && value.length && !data.includes(value)) {
-      return {
-        invalidData: true,
-      };
-    } else {
+    if (
+      control.value === undefined ||
+      control.value === null ||
+      control.value === ''
+    ) {
       return null;
     }
+
+    return data.includes(control.value)
+      ? null
+      : {
+          invalidData: true,
+        };
   };
 }

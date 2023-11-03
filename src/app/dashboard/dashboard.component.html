@@ -9,7 +9,6 @@
   *ngIf="formPreview"
   [formGroup]="formGroup"
   [formPreview]="formPreview"
-  [formOutput]="formOutput"
 >
   <ng-template appFormHeader>
     <div class="form-title-container" (dblclick)="toggleTitleEdit()">
@@ -28,6 +27,7 @@
   </ng-template>
 
   <ng-template appFormFooter>
+    <!-- Actions -->
     <div class="actions-container">
       <button
         [disabled]="formGroup.invalid"
@@ -46,9 +46,15 @@
         Print
       </button>
 
-      <button color="neutral" appButton (click)="validateForm()">
+      <button color="neutral" appButton (click)="updateFormValidityDisplay()">
         Validate
       </button>
     </div>
+
+    <!-- Output Display -->
+    <app-form-output
+      *ngIf="formOutput"
+      [formOutput]="formOutput"
+    ></app-form-output>
   </ng-template>
 </app-form>

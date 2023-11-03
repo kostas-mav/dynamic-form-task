@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, HostListener, Input } from '@angular/core';
-import { Form } from 'src/app/dashboard/form/form.component';
+import { Form } from 'src/app/shared/components/form/form.component';
 
 @Component({
   selector: '[appDownloadButton]',

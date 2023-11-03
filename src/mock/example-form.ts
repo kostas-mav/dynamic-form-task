@@ -1,4 +1,4 @@
-import { Form } from 'src/app/dashboard/form/form.component';
+import { Form } from 'src/app/shared/components/form/form.component';
 
 export const SAMPLE: Form = {
   title: 'My Form 2',

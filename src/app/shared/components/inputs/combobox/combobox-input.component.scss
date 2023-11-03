@@ -4,6 +4,9 @@
   position: relative;
   width: 100%;
   background-color: white;
+  border: 2px solid;
+  border-radius: 6px;
+  color: var(--font);
 }
 
 .dropdown {

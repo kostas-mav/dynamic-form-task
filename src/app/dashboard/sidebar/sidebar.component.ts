@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ListItemComponent } from 'src/app/shared/components/list-item/list-item.component';
 import { ButtonComponent } from 'src/app/shared/components/button/button.component';
 import { UploadButtonComponent } from 'src/app/data-convertion/upload-button/upload-button.component';
-import { Form } from '../form/form.component';
+import { Form } from '../../shared/components/form/form.component';
 
 @Component({
   selector: 'app-sidebar',

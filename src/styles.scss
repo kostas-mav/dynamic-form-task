@@ -26,3 +26,10 @@ body {
   font-size: 1.25rem;
   font-weight: 700;
 }
+
+.valid-control {
+  border: 2px solid green !important;
+}
+.invalid-control {
+  border: 2px solid red !important;
+}

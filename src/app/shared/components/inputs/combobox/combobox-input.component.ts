@@ -1,4 +1,12 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   ControlValueAccessor,
@@ -30,14 +38,16 @@ import { ClickOutsideDirective } from 'src/app/shared/directives/click-outside/c
   ],
 })
 export class ComboboxInputComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
   private _destroy$ = new Subject<void>();
 
   @Input() options: string[] = [];
 
-  textInputControl = new FormControl('');
+  @ViewChild(TextInputComponent, { read: ElementRef })
+  textInputElementRef!: ElementRef;
 
+  textInputControl = new FormControl('');
   displayedOptions$ = new BehaviorSubject<string[]>([]);
   dropdownEnabled$ = new BehaviorSubject<boolean>(false);
   disabled: boolean = false;
@@ -94,6 +104,13 @@ export class ComboboxInputComponent
         })
       )
       .subscribe();
+  }
+
+  ngAfterViewInit(): void {
+    // Remove the text-input component's host border so the parent form
+    // control can enforce styles
+    const textInputElement = this.textInputElementRef.nativeElement;
+    textInputElement.style.border = 'none';
   }
 
   ngOnDestroy(): void {

@@ -2,16 +2,25 @@
   <span>{{ control.title }} {{ control.required ? "*" : "" }}</span>
 
   <app-text-input
+    appFormControlHighlight
     *ngIf="control.type === 'text'"
     [formControlName]="control.name"
   ></app-text-input>
 
+  <app-textarea-input
+    appFormControlHighlight
+    *ngIf="control.type === 'textarea'"
+    [formControlName]="control.name"
+  ></app-textarea-input>
+
   <app-date-input
+    appFormControlHighlight
     *ngIf="control.type === 'date'"
     [formControlName]="control.name"
   ></app-date-input>
 
   <app-combobox-input
+    appFormControlHighlight
     *ngIf="control.type === 'combobox'"
     [formControlName]="control.name"
     [options]="control.data ?? []"

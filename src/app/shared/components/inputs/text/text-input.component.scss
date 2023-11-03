@@ -1,15 +1,17 @@
 :host {
   display: inline-block;
   width: 100%;
+  border: 2px solid;
+  border-radius: 6px;
+  color: var(--font);
 }
 
 input {
   padding: 0.5rem;
   width: 100%;
   outline: none;
-  border: 2px solid;
+  border: none;
   border-radius: 6px;
-  color: var(--font);
 
   &::placeholder {
     font-weight: 400;

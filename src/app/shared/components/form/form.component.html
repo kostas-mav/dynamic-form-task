@@ -1,0 +1,39 @@
+<div class="dashboard-container">
+  <ng-content select=".left-sidebar"></ng-content>
+
+  <div class="form-container">
+    <!-- Title -->
+    <ng-container *ngIf="headerTemplate; else defaultTitle">
+      <ng-container
+        *ngTemplateOutlet="headerTemplate; context: formPreview"
+      ></ng-container>
+    </ng-container>
+
+    <ng-template #defaultTitle>
+      <div class="form-title">Default Fallback Title</div>
+    </ng-template>
+    <!-- Form -->
+    <ng-container *ngIf="formPreview">
+      <form [formGroup]="formGroup" class="grid-container">
+        <div
+          class="grid-item"
+          *ngFor="let group of formPreview.groups"
+          [ngStyle]="{ 'grid-column-end': 'span ' + group.span }"
+        >
+          <app-form-group
+            [formGroup]="formGroup"
+            [group]="group"
+          ></app-form-group>
+        </div>
+      </form>
+
+      <ng-container *ngIf="footerTemplate">
+        <ng-container
+          *ngTemplateOutlet="footerTemplate; context: { formPreview }"
+        ></ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <ng-content select=".right-sidebar"></ng-content>
+</div>

@@ -1,0 +1,13 @@
+<ng-container *ngIf="subscriptions$ | async"></ng-container>
+
+<app-form [formGroup]="formGroup" [formPreview]="formPreview">
+  <ng-template appFormHeader>
+    <div class="category-combobox">
+      <span class="form-title">Select a category</span>
+      <app-combobox-input
+        [formControl]="categoryControl"
+        [options]="categoryOptions"
+      ></app-combobox-input>
+    </div>
+  </ng-template>
+</app-form>

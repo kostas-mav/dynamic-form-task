@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Subject } from 'rxjs';
 import { ButtonComponent } from '../button/button.component';
 import { DownloadButtonComponent } from 'src/app/data-convertion/download-button/download-button.component';
-import { Form } from 'src/app/dashboard/form/form.component';
+import { Form } from '../form/form.component';
 
 @Component({
   selector: 'app-list-item',

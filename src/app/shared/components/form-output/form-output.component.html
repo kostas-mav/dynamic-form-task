@@ -1,0 +1,8 @@
+<div class="form-output">
+  <h3>Form Output:</h3>
+  <hr />
+  <span class="form-output-item" *ngFor="let item of formOutput | keyvalue">
+    {{ item.key }}:
+    {{ !item.value || !item.value.length ? "-" : item.value }}
+  </span>
+</div>

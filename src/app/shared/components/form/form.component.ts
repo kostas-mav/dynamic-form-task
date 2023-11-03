@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   ContentChild,
+  EventEmitter,
   Input,
   TemplateRef,
 } from '@angular/core';
@@ -42,14 +43,10 @@ export interface Form {
   ],
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormComponent {
   @Input({ required: true }) formGroup!: FormGroup;
   @Input({ required: true }) formPreview!: Form | null;
-  @Input({ required: true }) formOutput!: {
-    [key: string]: string | null;
-  } | null;
 
   @ContentChild(FormHeaderDirective, { read: TemplateRef })
   headerTemplate!: TemplateRef<any>;
